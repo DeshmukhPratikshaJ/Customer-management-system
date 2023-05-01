@@ -2,10 +2,7 @@ package appTester;
 
 import java.util.Scanner;
 import static java.lang.System.*;
-import static customer.acceptCustDetails.*;
-import  java.time.*;
-import customer.ValidationRules;
-import java.time.format.DateTimeFormatter;
+import static customer.ValidationRules.checkAllDetailsSignUp;
 
 
 import EnumClasses.ServicePlan;
@@ -25,27 +22,27 @@ public class testCustomer {
 			//---------customer array----------
 		   Customer[] custList=new Customer[100];
 		   int track=0;
-		   
-		   //-----------Menu----------------
-		   out.println("menu:");
-		   out.println("1.sign up 2.sign in");
-		   out.println("3.update password 4.unsubscribe");
-		   out.println("5.exit");
-		   //--------switch case-----------
-		   int choice;
-		   String email;
-		   do {
+		   boolean exit=false;
+		   while(!exit)	   {
+			   try {
+			 //-----------Menu----------------
+			   out.println("menu:");
+			   out.println("1.sign up 2.sign in");
+			   out.println("3.update password 4.unsubscribe");
+			   out.println("5.exit");
+			   //--------switch case-----------
 			   out.println("enter choice");
-			   choice=sc.nextInt();
-			  switch(choice)
+			  switch(sc.nextInt())
 			  {
 			  case 1:  //---------Signing up------------
-				  out.println("enter emailID");
-				  email=sc.next();
-				  ValidationRules.validateEmail(email);
-				  out.println("enter first name,last name,DOB(dd-MM-yyyy),service plan");
-				  custList[track++]=acceptDetails(sc.next(),sc.next(),email,sc.next(),LocalDate.parse(sc.next(),DateTimeFormatter.ofPattern("dd-MM-yyyy")),ServicePlan.valueOf(sc.next()));
+				  if(track<custList.length)
+				  {
+				  out.println("enter customer details:first_name,last_name,Email,password,Dob(dd-MM-yyyy),Plan");
+				  custList[track++]=checkAllDetailsSignUp(sc.next(),sc.next(),sc.next(),sc.next(),sc.next(),sc.next(),custList);
 				  out.println("account created..");
+				  }
+				  else
+					  System.out.println("list is full");
 				  break;
 				  
 			  case 2:   //---------signing in------------
@@ -58,19 +55,17 @@ public class testCustomer {
 			  case 4:  //----------unsubscribe----------------
 				  break;
 			  case 5: //--------------exit-------------
+				  exit=true;
 				  break;
 			  default:
 				out.println();  
 			  }
-			   
-			   
-		   }while(choice>0);
+			   }
+			  catch(Exception e){
+					out.println(e.getStackTrace());
+			  }
+			   }
 		}
-		catch(Exception e){
-			out.println(e.getStackTrace());
-		}
-		
-
 	}
 
-}
+	}

@@ -32,6 +32,11 @@ public Customer(String first_name, String last_name, String email,String passwor
 	
 	this.id=++idCounter;
 }
+//------------overloaded customer constctor--using PK values
+public Customer(String email)
+{
+	this.email=email;  //other fiels will be null or 0
+}
 
 //---------------------getters and setters----------------
 
@@ -81,6 +86,7 @@ public ServicePlan getPlan() {                  //getPlan
 
 public void setPlan(ServicePlan plan) {         //setPlan
 	this.plan = plan;
+	setRegistrationAmount();                 //change registration amt according tonew plan
 }
 
 public int getId() {                            //getID
@@ -92,9 +98,26 @@ public double getRegistrationAmount() {         //getRegistrationAmount
 }
 
 @SuppressWarnings("unused")
-private void setRegistrationAmount() {
+private void setRegistrationAmount() {          //setRegistrationAmount
 	this.registrationAmount=plan.getPrice();
 }
-   
+ 
+//--------------------toString-----------------
+@Override
+public String toString() {
+	return "Customer :id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", email=" + email
+			+ ", password=" + password + ", registrationAmount=" + registrationAmount + ", dob=" + dob + ", plan="
+			+ plan;
+}
+//------------------override equals method---check by primary key
+@Override
+public boolean equals(Object anotherCust)
+{
+	if(anotherCust instanceof Customer)
+		return (this.email).equals(((Customer)anotherCust).getEmail());
+	else
+		return false;
+}
+
 
 }
