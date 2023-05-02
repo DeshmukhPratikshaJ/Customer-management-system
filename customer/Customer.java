@@ -97,7 +97,7 @@ public double getRegistrationAmount() {         //getRegistrationAmount
 	return registrationAmount;
 }
 
-@SuppressWarnings("unused")
+
 private void setRegistrationAmount() {          //setRegistrationAmount
 	this.registrationAmount=plan.getPrice();
 }
@@ -105,9 +105,8 @@ private void setRegistrationAmount() {          //setRegistrationAmount
 //--------------------toString-----------------
 @Override
 public String toString() {
-	return "Customer :id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", email=" + email
-			+ ", password=" + password + ", registrationAmount=" + registrationAmount + ", dob=" + dob + ", plan="
-			+ plan;
+	return "id:" + id + " name:" + first_name +" "+ last_name + " email:" + email+
+	" dob:" + dob + " plan:"+ plan;
 }
 //------------------override equals method---check by primary key
 @Override

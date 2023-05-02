@@ -1,11 +1,13 @@
 package appTester;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import static java.lang.System.*;
 import static customer.ValidationRules.checkAllDetailsSignUp;
 
 
 import EnumClasses.ServicePlan;
+import static utils.HardcoreCustList.populateCustList;
 //----------import package and class files-------
 import customer.*;
 
@@ -20,8 +22,11 @@ public class testCustomer {
 				out.println(plan);
 			
 			//---------customer array----------
-		   Customer[] custList=new Customer[100];
-		   int track=0;
+		   ArrayList<Customer> custList=populateCustList();
+//		   //------------alrdy existing customer details-----------------
+//		   for(Customer c:custList)
+//			   System.out.println(c);
+		   
 		   boolean exit=false;
 		   while(!exit)	   {
 			   try {
@@ -30,19 +35,15 @@ public class testCustomer {
 			   out.println("1.sign up 2.sign in");
 			   out.println("3.update password 4.unsubscribe");
 			   out.println("5.exit");
-			   //--------switch case-----------
+			 //--------switch case-----------
 			   out.println("enter choice");
+			   
 			  switch(sc.nextInt())
 			  {
 			  case 1:  //---------Signing up------------
-				  if(track<custList.length)
-				  {
 				  out.println("enter customer details:first_name,last_name,Email,password,Dob(dd-MM-yyyy),Plan");
-				  custList[track++]=checkAllDetailsSignUp(sc.next(),sc.next(),sc.next(),sc.next(),sc.next(),sc.next(),custList);
+				  custList.add(checkAllDetailsSignUp(sc.next(),sc.next(),sc.next(),sc.next(),sc.next(),sc.next(),custList));
 				  out.println("account created..");
-				  }
-				  else
-					  System.out.println("list is full");
 				  break;
 				  
 			  case 2:   //---------signing in------------
