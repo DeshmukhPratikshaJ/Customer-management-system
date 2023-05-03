@@ -3,7 +3,7 @@ package customer;
 import java.time.LocalDate;
 import EnumClasses.ServicePlan;
 
-public class Customer {
+public class Customer implements Comparable<Customer> {
    private static int idCounter;        //idCounter(static)
    
    //----------------instance variables
@@ -106,7 +106,7 @@ private void setRegistrationAmount() {          //setRegistrationAmount
 @Override
 public String toString() {
 	return "id:" + id + " name:" + first_name +" "+ last_name + " email:" + email+
-	" dob:" + dob + " plan:"+ plan;
+	" dob:" + dob + " plan:"+ plan.name();
 }
 //------------------override equals method---check by primary key
 @Override
@@ -116,6 +116,12 @@ public boolean equals(Object anotherCust)
 		return (this.email).equals(((Customer)anotherCust).getEmail());
 	else
 		return false;
+}
+//----------------overrriding compareTo method of Comparable---------
+@Override
+public int compareTo(Customer o) {      
+	
+	return this.email.compareTo(o.getEmail());
 }
 
 
