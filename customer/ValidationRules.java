@@ -11,13 +11,14 @@ import exceptions.CustomerException;
 public class ValidationRules {
 
 	public static Customer checkAllDetailsSignUp(String first_name, String last_name, String email, String password,
-			String dob, String plan, List<Customer> custList)
+			String dob, String plan,String registrationDate, List<Customer> custList)
 			throws CustomerException, DateTimeParseException, IllegalArgumentException {
 		String validEmail = validateEmail(email, custList); // validate uniqueness of email
 		CheckPasswordStrength(password);                  //validate strength of password
 		LocalDate validDob = parseDOB_validateAge(dob); // validate age>21
 		ServicePlan validPlan = parseAndvalidateServicePlan(plan); // validate service plan
-		return new Customer(first_name, last_name, validEmail, password, validDob, validPlan);
+		LocalDate ValidRegistrationDate=LocalDate.parse(registrationDate);
+		return new Customer(first_name, last_name, validEmail, password, validDob, validPlan,ValidRegistrationDate);
 
 	}
 
@@ -31,6 +32,14 @@ public class ValidationRules {
 				throw new CustomerException("wrong password...try again");
 		}
 		return index;
+	}
+	
+	public static void changePlanPaySubscription(int index,String plan,List<Customer> custList)
+	{
+		ServicePlan validPlan = parseAndvalidateServicePlan(plan);  //validate plan
+		custList.get(index).setPlan(validPlan);                     //update plan
+		custList.get(index).setLastSubscriptinDate(LocalDate.now());//update lastSubscriptionDate
+		
 	}
 
 	// -------------1.Validate duplication of email------------

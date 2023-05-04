@@ -15,13 +15,15 @@ public class Customer implements Comparable<Customer> {
    private double registrationAmount;
    private LocalDate dob;
    private ServicePlan plan;
+   private LocalDate registrationDate;
+   private LocalDate lastSubscriptionDate;
    
    //--------static block-------------------------------
    static {
 	   idCounter=0;
    }
 //------------------constructor--name,email,password,dob,plan----
-public Customer(String first_name, String last_name, String email,String password, LocalDate dob, ServicePlan plan) {
+public Customer(String first_name, String last_name, String email,String password, LocalDate dob, ServicePlan plan,LocalDate registrationDate) {
 	super();
 	this.first_name = first_name;
 	this.last_name = last_name;
@@ -29,6 +31,8 @@ public Customer(String first_name, String last_name, String email,String passwor
 	this.password=password;
 	this.dob = dob;
 	this.plan = plan;
+	this.registrationDate=registrationDate;
+	this.lastSubscriptionDate=registrationDate;
 	
 	this.id=++idCounter;
 }
@@ -91,6 +95,16 @@ public void setPlan(ServicePlan plan) {         //setPlan
 
 public int getId() {                            //getID
 	return id;
+}
+
+public void setLastSubscriptinDate(LocalDate date)  //setLastSubscriptionDate
+{
+	this.lastSubscriptionDate=date;
+}
+
+public LocalDate getLastSubscriptinDate() {       //getLastSubscriptinDate
+	return this.lastSubscriptionDate;
+	
 }
 
 public double getRegistrationAmount() {         //getRegistrationAmount

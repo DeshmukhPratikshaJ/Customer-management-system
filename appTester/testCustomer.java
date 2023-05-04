@@ -1,15 +1,23 @@
 package appTester;
 
-import customer.Customer;
+import static customer.ValidationRules.changePlanPaySubscription;
 import static customer.ValidationRules.checkAllDetailsSignUp;
 import static customer.ValidationRules.signIn;
+import static java.lang.System.in;
+import static java.lang.System.out;
 import static utils.HardcoreCustList.populateCustList;
-import static java.lang.System.*;
+
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.ListIterator;
 import java.util.Scanner;
+
+import EnumClasses.Menu;
 import EnumClasses.ServicePlan;
+import customer.Customer;
 
 
 public class testCustomer {
@@ -33,19 +41,18 @@ public class testCustomer {
 				try {
 					// -----------Menu----------------
 					out.println("menu:");
-					out.println("1.sign up 2.sign in");
-					out.println("3.update password 4.unsubscribe");
-					out.println("5.list of all customers 6.sort customer by emailID ");
-					System.out.println("7.sort customers by servicePlan and name 0.exit");
+					for (Menu menu : Menu.values())
+						out.println(menu);
+					
 					// --------switch case-----------
 					out.println("enter choice");
 
 					switch (sc.nextInt()) {
 					case 1: // ---------Signing up------------
 						
-						out.println("enter customer details:first_name,last_name,Email,password,Dob(yyyy-MM-dd),Plan");
+						out.println("enter customer details:first_name,last_name,Email,password,Dob(yyyy-MM-dd),Plan,registrationDate");
 						custList.add(checkAllDetailsSignUp(sc.next(), sc.next(), sc.next(), sc.next(), sc.next(),
-								sc.next(), custList));
+								sc.next(),sc.next(), custList));
 						out.println("account created..");
 						break;
 
@@ -112,6 +119,42 @@ public class testCustomer {
 						
 						for(Customer c:custList)
 							   System.out.println(c);
+						break;
+					
+					case 8:  //---------pay subscription if not paid for more than one month---------
+						// ----step 1--sign in
+						out.println("enter ur emailID and password");
+						index = signIn(sc.next(), sc.next(), custList);
+						// succesfully signed in
+						// ----step 2--check if lastSubscriptionDate> 1 month then show option for changing plan,paying subscription 
+						LocalDate lastSubscriptionDate=custList.get(index).getLastSubscriptinDate();
+						if(Period.between( lastSubscriptionDate,LocalDate.now()).getMonths()>1)
+						{
+							out.println("you are late on paying subscription amount");
+							out.println("do you want to pay subscription and continue:y/n");
+							char isNewPlan=sc.next().toLowerCase().charAt(0);
+							if(isNewPlan=='y') {
+							out.println("enter plan");
+							changePlanPaySubscription(index, sc.next(), custList);
+							out.println("subscription renewed");
+						}
+							else
+								out.println("renew subscription ");
+						}
+						else
+							out.println("subscription is still valid.");
+							out.println("Subscription ends on :"+custList.get(index).getLastSubscriptinDate().plusMonths(1));
+					
+						break;
+						
+					case 9:// for admin------------chack the custList and remove access of customer if lastSubsciptionDate is more than 3 months
+						ListIterator<Customer> custItr=custList.listIterator();
+						while(custItr.hasNext()) {
+							double period=Period.between(LocalDate.now(),custItr.next().getLastSubscriptinDate()).getMonths();
+							if(period>3)
+								custItr.remove();			
+						}
+						
 						break;
 
 					case 0: // --------------exit-------------
